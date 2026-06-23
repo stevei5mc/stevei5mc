@@ -11,7 +11,7 @@ on:
 
 jobs:
   generate:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     env:
       GITHUB_TOKEN: ${{ github.token }}
@@ -42,7 +42,7 @@ jobs:
     - name: Generate streak stats
       uses: DenverCoder1/github-readme-streak-stats@main
       with:
-        options: user=${{ env.repo_owner }}&border_radius=10&locale=zh_Hans&date_format=%5BY.%5Dn.j
+        options: user=${{ env.repo_owner }}&&theme=transparent&border_radius=10&locale=zh_Hans&date_format=%5BY.%5Dn.j
         path: dist/streak.svg
         token: ${{ env.GH_TK }}
     - name: push github-contribution-grid-snake.svg to the output branch
