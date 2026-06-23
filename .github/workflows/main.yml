@@ -15,14 +15,36 @@ jobs:
     timeout-minutes: 5
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      GH_TK: ${{ secrets.GH_TK }}
+      repo_owner: ${{ github.repository_owner }}
     steps:
     - name: generate github-contribution-grid-snake.svg
       uses: Platane/snk/svg-only@v3
       with:
-        github_user_name: ${{ github.repository_owner }}
+        github_user_name: ${{ env.repo_owner}}
         outputs: |
           dist/github-contribution-grid-snake.svg
           dist/github-contribution-grid-snake-dark.svg?palette=github-dark
+    - name: Generate stats card
+      uses: stats-organization/github-readme-stats-action@v2
+      with:
+        card: stats
+        options: username=${{ env.repo_owner}}&locale=cn&order_radius=10&number_format=long&theme=transparent&hide_title=true&show_icons=true
+        path: dist/stats.svg
+        token: ${{ env.GH_TK }}
+    - name: Generate top languages card
+      uses: stats-organization/github-readme-stats-action@v2
+      with:
+        card: top-langs
+        options: username=${{ env.repo_owner}}&locale=cn&border_radius=10&theme=transparent&layout=donut-vertical
+        path: dist/top-langs.svg
+        token: ${{ env.GH_TK }}
+    - name: Generate streak stats
+      uses: DenverCoder1/github-readme-streak-stats@main
+      with:
+        options: user=${{ env.repo_owner }}&border_radius=10&locale=zh_Hans&date_format=%5BY.%5Dn.j
+        path: dist/streak.svg
+        token: ${{ env.GH_TK }}
     - name: push github-contribution-grid-snake.svg to the output branch
       uses: crazy-max/ghaction-github-pages@v5
       with:
